@@ -1,0 +1,13 @@
+# N.B.: whitespace rules are inferred from .editorconfig
+printWidth: 100         # wrap at 100 chars
+singleQuote: true       # force single quotes for strings
+arrowParens: 'always'   # force (x) => x over x => x
+trailingComma: 'all'    # force trailing commas wherever possible on multiline expressions
+bracketSpacing: true    # force { foo: 123 } instead of {foo: 123} (single line literals)
+bracketSameLine: false  # force:
+                        # <button id={id}                
+                        #   className={className}            
+                        # >                                  
+                        #   {label}                      
+                        # </button>
+

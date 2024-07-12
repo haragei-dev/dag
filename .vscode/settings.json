@@ -1,0 +1,55 @@
+{
+  "explorer.autoRevealExclude": {
+    "**/node_modules": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.test.ts",
+    "*.d.ts": "${capture}.map",
+    "package.json": ".git*, .editorconfig, .eslint*, .node-version, .pnpm*, pnpm-*, .prettier*, .vscode*, eslint*, prettier*, tsconfig.json, *.log",
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.prettierPath": "node_modules/prettier",
+  "nodejs-testing.include": [
+    "./src"
+  ],
+  "nodejs-testing.extensions": [
+    {
+      "extensions": [
+        "mjs",
+        "cjs",
+        "js"
+      ],
+      "parameters": []
+    },
+    {
+      "extensions": [
+        "mts",
+        "cts",
+        "ts"
+      ],
+      "parameters": [
+        "--import",
+        "tsx"
+      ]
+    }
+  ],
+  "cSpell.words": [
+    "arethetypeswrong",
+    "attw",
+    "decrementally",
+    "haragei",
+    "nonconstructor",
+    "pkgroll",
+    "postbuild",
+    "postpublish",
+    "ruleset",
+    "voxpelli"
+  ],
+  "references.preferredLocation": "peek"
+}

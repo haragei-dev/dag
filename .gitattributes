@@ -1,0 +1,3 @@
+# Don't allow merging changes to the lock file, because the result
+# may be invalid. Instead, conflicts should be resolved with "pnpm install".
+pnpm-lock.yaml merge=binary

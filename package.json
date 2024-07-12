@@ -1,0 +1,82 @@
+{
+  "name": "@haragei/dag",
+  "version": "1.0.0",
+  "author": "Aleksandar Ružičić",
+  "license": "MIT",
+  "description": "A Directed Acyclic Graph (DAG) library with online cycle detection and topological ordering.",
+  "keywords": [
+    "dag",
+    "graph",
+    "cycle detection"
+  ],
+  "homepage": "https://github.com/haragei-dev/dag",
+  "repository": "github:haragei-dev/dag",
+  "bugs": {
+    "url": "https://github.com/haragei-dev/dag/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "directory": "package"
+  },
+  "clean-publish": {
+    "withoutPublish": true,
+    "tempDir": "package",
+    "fields": [
+      "packageManager",
+      "pnpm",
+      "publishConfig",
+      "scripts"
+    ]
+  },
+  "scripts": {
+    "prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && rm -rf ./package && clean-publish && attw --pack ./package",
+    "postpublish": "rm -rf ./package",
+    "build": "pkgroll --target=node20 --minify --sourcemap",
+    "lint": "eslint ./src",
+    "test": "NODE_V8_COVERAGE=coverage glob -c \"node --import tsx --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage/lcov.info  --no-warnings --test-reporter @voxpelli/node-test-pretty-reporter --test-reporter-destination stdout $NODE_TEST_ARGS --test\" \"./src/**/*.test.ts\"",
+    "test:watch": "NODE_TEST_ARGS='--watch' pnpm test",
+    "test:ci": "NODE_TEST_ARGS='--test-reporter node-test-github-reporter --test-reporter-destination stdout' pnpm test",
+    "coverage": "pnpx lcov-cli-report-viewer coverage/lcov.info",
+    "coverage:html": "pnpx @lcov-viewer/cli lcov -o coverage/report coverage/lcov.info && pnpx serve coverage/report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.15.3",
+    "@eslint/js": "9.6.0",
+    "@types/eslint__js": "8.42.3",
+    "@types/node": "20.14.10",
+    "@voxpelli/node-test-pretty-reporter": "1.1.2",
+    "clean-publish": "5.0.0",
+    "eslint": "9.6.0",
+    "glob": "11.0.0",
+    "node-test-github-reporter": "1.2.0",
+    "pkgroll": "2.1.1",
+    "prettier": "3.3.2",
+    "tsx": "4.16.2",
+    "typescript": "5.5.3",
+    "typescript-eslint": "8.0.0-alpha.41",
+    "typescript-eslint-language-service": "5.0.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "@rollup/plugin-commonjs": "^26.0.1"
+    }
+  },
+  "packageManager": "pnpm@9.5.0+sha256.dbdf5961c32909fb030595a9daa1dae720162e658609a8f92f2fa99835510ca5"
+}
