@@ -14,4 +14,15 @@ describe('PriorityQueue', () => {
 
         assert.deepStrictEqual([...queue], ['A', 'B', 'C', 'D', 'E']);
     });
+    it('returns items in priority order', () => {
+        const queue = new PriorityQueue<string>();
+
+        queue.enqueue('B', 2);
+        queue.enqueue('C', 3);
+        queue.enqueue('E', 5);
+        queue.enqueue('A', 1);
+        queue.enqueue('D', 4);
+
+        assert.deepStrictEqual(queue.toArray(), ['A', 'B', 'C', 'D', 'E']);
+    });
 });

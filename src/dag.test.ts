@@ -412,6 +412,30 @@ describe('DAG', () => {
             graph.order,
         );
     });
+
+    it('should return sub-graphs', () => {
+        const graph = new DAG<string>();
+
+        graph.addEdge('A', 'B'); //   E      A
+        graph.addEdge('A', 'C'); //   |     / \
+        graph.addEdge('B', 'D'); //   F    B   C
+        graph.addEdge('C', 'D'); //         \ /
+        graph.addEdge('E', 'F'); //          D
+
+        const subGraphs = graph.subGraphs();
+
+        assert.equal(subGraphs.length, 2);
+        assertTopologicalOrder(
+            [
+                ['A', 'B'],
+                ['A', 'C'],
+                ['B', 'D'],
+                ['C', 'D'],
+            ],
+            subGraphs[0]!,
+        );
+        assertTopologicalOrder([['E', 'F']], subGraphs[1]!);
+    });
 });
 
 function assertTopologicalOrder<T>(edges: Iterable<[T, T]>, order: T[], message = ''): void {

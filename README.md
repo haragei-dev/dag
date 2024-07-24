@@ -116,7 +116,9 @@ Edges:
 
 Sorting / Ordering:
 - [`.getNodeOrder()`](#getnodeordernodes-t-t)
-- [`.sortNodes()`](#sortnodes-t-t)
+
+Subgraphs:
+- [`.subGraphs()`](#subgraphs-t)
 
 Predecessors / Successors:
 - [`.getImmediatePredecessorsOf()`](#getimmediatepredecessorsofnodes-t-sett)
@@ -339,6 +341,15 @@ In a case that a node does not exist in the graph, it is pushed to the end of th
 - `nodes`: The nodes to sort.
 
 **Returns:** The input array of nodes, sorted in a topological order.
+
+
+#### `subGraphs(): T[][]`
+
+Returns an array of node arrays, where each inner array represents a subgraph.
+
+The nodes in each subgraph are topologically ordered.
+
+**Returns:** An array of independent subgraphs.
 
 
 #### `getImmediatePredecessorsOf(...nodes: T[]): Set<T>`

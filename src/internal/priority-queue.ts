@@ -58,4 +58,13 @@ export class PriorityQueue<T> {
     [Symbol.iterator](): Iterator<T> {
         return this.#data[Symbol.iterator]();
     }
+
+    /**
+     * Returns an array containing all queue items in priority order.
+     *
+     * @return Queue items in priority order.
+     */
+    public toArray(): T[] {
+        return this.#data.slice(0);
+    }
 }

@@ -510,6 +510,55 @@ export class DAG<T> {
     }
 
     /**
+     * Returns an array of node arrays, where each inner array represents a subgraph.
+     *
+     * The nodes in each subgraph are topologically ordered.
+     *
+     * @return An array of independent subgraphs.
+     */
+    subGraphs(): T[][] {
+        const result: T[][] = [];
+
+        if (this.#order.length == 0) {
+            return result;
+        }
+
+        const visited = new Set<T>();
+
+        for (const id of this.#order) {
+            if (visited.has(id)) {
+                continue;
+            }
+
+            const subGraph = new PriorityQueue<T>();
+            const stack = [id];
+
+            while (stack.length > 0) {
+                const id = stack.pop()!;
+
+                if (visited.has(id)) {
+                    continue;
+                }
+
+                const node = this.#nodes.get(id)!;
+
+                visited.add(id);
+                subGraph.enqueue(id, node.order);
+
+                for (const successor of node.outgoing) {
+                    if (!visited.has(successor)) {
+                        stack.push(successor);
+                    }
+                }
+            }
+
+            result.push(subGraph.toArray());
+        }
+
+        return result;
+    }
+
+    /**
      * Adds a node to the graph and returns it.
      * If the node already exists, it is returned unchanged.
      *
