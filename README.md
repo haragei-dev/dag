@@ -116,6 +116,7 @@ Edges:
 
 Sorting / Ordering:
 - [`.getNodeOrder()`](#getnodeordernodes-t-t)
+- [`.sortNodes()`](#sortnodesnodes-t-t)
 
 Subgraphs:
 - [`.subGraphs()`](#subgraphs-t)
@@ -331,7 +332,7 @@ In a case that a node does not exist in the graph, it is pushed to the end of th
 **Returns:** An array of the given nodes in a topological order.
 
 
-#### `sort(nodes: T[]): T[]`
+#### `sortNodes(nodes: T[]): T[]`
 
 Sorts the given array of nodes, in place by their topological order.
 
