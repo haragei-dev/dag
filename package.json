@@ -7,7 +7,10 @@
   "keywords": [
     "dag",
     "graph",
-    "cycle detection"
+    "cycle detection",
+    "topological ordering",
+    "toposort",
+    "task scheduling"
   ],
   "homepage": "https://github.com/haragei-dev/dag",
   "repository": "github:haragei-dev/dag",

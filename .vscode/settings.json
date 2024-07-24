@@ -49,6 +49,7 @@
     "postbuild",
     "postpublish",
     "ruleset",
+    "toposort",
     "voxpelli"
   ],
   "references.preferredLocation": "peek"
