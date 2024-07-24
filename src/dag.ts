@@ -5,6 +5,18 @@ import { PriorityQueue } from './internal/priority-queue';
 import { union } from './internal/union';
 
 /**
+ * Represents a set of nodes that can be processed in parallel as defined by
+ * their relationship to each other in the graph.
+ */
+export type ParallelCollection<T> = Set<T | SerialCollection<T>>;
+
+/**
+ * Represents a list of nodes that must be processed sequentially as defined by
+ * their relationship to each other in the graph.
+ */
+export type SerialCollection<T> = (T | Set<T>)[];
+
+/**
  * A Directed Acyclic Graph structure with online cycle detection and topological ordering.
  */
 export class DAG<T> {
@@ -556,6 +568,75 @@ export class DAG<T> {
         }
 
         return result;
+    }
+
+    /**
+     * Returns a set of all subgraphs in the graph.
+     *
+     * Each subgraph is represented either as a single node, or as an array which
+     * is meant to be processed sequentially and its items are either a single node
+     * or a Set of nodes that can be processed in parallel.
+     *
+     * @example
+     * ```typescript
+     * const dag = new DAG<string>(['Z']);
+     * dag.addEdge('A', 'B');
+     * dag.addEdge('A', 'C');
+     * dag.addEdge('B', 'D');
+     * dag.addEdge('C', 'D');
+     * dag.addEdge('X', 'Y');
+     *
+     * console.log(dag.parallelize());
+     * // Set(3) { [ 'A', Set(2) { 'B', 'C' }, 'D' ], [ 'X', 'Y' ], 'Z' }
+     *```
+     *
+     * @return A set of all subgraphs in the graph, parallelized.
+     */
+    parallelize(): ParallelCollection<T> {
+        const result: ParallelCollection<T> = new Set();
+
+        for (const subGraph of this.subGraphs()) {
+            result.add(this.#parallelize(subGraph));
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns a list of all nodes in the given subgraph, ordered topologically.
+     * The list is meant to be processed sequentially and its items are either
+     * a single node or a Set of nodes that can be processed in parallel.
+     *
+     * @param subGraph - The subgraph to parallelize.
+     * @return The parallelized subgraph.
+     */
+    #parallelize(subGraph: ReadonlyArray<T>): SerialCollection<T> | T {
+        if (subGraph.length == 1) {
+            return subGraph[0]!;
+        }
+
+        const levels: Map<T, number> = new Map();
+        const groups: Set<T>[] = [];
+
+        for (const nodeId of subGraph) {
+            const node = this.#nodes.get(nodeId);
+            if (!node) {
+                continue;
+            }
+
+            const level = Math.max(
+                0,
+                ...Array.from(node.incoming, (id) => (levels.get(id) || 0) + 1),
+            );
+
+            levels.set(nodeId, level);
+            if (groups.length <= level) {
+                groups.push(new Set<T>());
+            }
+            groups[level]!.add(nodeId);
+        }
+
+        return groups.map((group) => (group.size == 1 ? Array.from(group)[0]! : group));
     }
 
     /**

@@ -436,6 +436,55 @@ describe('DAG', () => {
         );
         assertTopologicalOrder([['E', 'F']], subGraphs[1]!);
     });
+
+    it('should parallelize sub-graphs', () => {
+        const graph = new DAG<string>();
+
+        /*
+                   A                 X
+                  / \               / \
+                 /   \             Y   Z
+                /     \
+               B       C -----           
+              / \     / \    |
+             D   E   F   G   |         
+             |    \ /    |   |
+             H     I     J --/
+                    \   /   
+                     \ /
+                      K       
+        */
+
+        graph.addEdge('C', 'F');
+        graph.addEdge('D', 'H');
+        graph.addEdge('C', 'J');
+        graph.addEdge('A', 'B');
+        graph.addEdge('B', 'D');
+        graph.addEdge('X', 'Z');
+        graph.addEdge('B', 'E');
+        graph.addEdge('A', 'C');
+        graph.addEdge('C', 'G');
+        graph.addEdge('X', 'Y');
+        graph.addEdge('F', 'I');
+        graph.addEdge('G', 'J');
+        graph.addEdge('E', 'I');
+        graph.addEdge('I', 'K');
+        graph.addEdge('J', 'K');
+
+        assert.deepEqual(
+            graph.parallelize(),
+            new Set([
+                [
+                    'A',
+                    new Set(['B', 'C']),
+                    new Set(['D', 'E', 'F', 'G']),
+                    new Set(['H', 'I', 'J']),
+                    'K',
+                ],
+                ['X', new Set(['Y', 'Z'])],
+            ]),
+        );
+    });
 });
 
 function assertTopologicalOrder<T>(edges: Iterable<[T, T]>, order: T[], message = ''): void {

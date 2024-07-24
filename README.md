@@ -120,6 +120,7 @@ Sorting / Ordering:
 
 Subgraphs:
 - [`.subGraphs()`](#subgraphs-t)
+- [`.parallelize()`](#parallelize-parallelcollectiont)
 
 Predecessors / Successors:
 - [`.getImmediatePredecessorsOf()`](#getimmediatepredecessorsofnodes-t-sett)
@@ -351,6 +352,30 @@ Returns an array of node arrays, where each inner array represents a subgraph.
 The nodes in each subgraph are topologically ordered.
 
 **Returns:** An array of independent subgraphs.
+
+
+#### `parallelize(): ParallelCollection<T>`
+
+Returns a set of all subgraphs in the graph.
+
+Each subgraph is represented either as a single node, or as an array which
+is meant to be processed sequentially and its items are either a single node
+or a Set of nodes that can be processed in parallel.
+
+**Example:**
+```typescript
+const dag = new DAG<string>(['Z']);
+dag.addEdge('A', 'B');
+dag.addEdge('A', 'C');
+dag.addEdge('B', 'D');
+dag.addEdge('C', 'D');
+dag.addEdge('X', 'Y');
+
+console.log(dag.parallelize());
+// Set(3) { [ 'A', Set(2) { 'B', 'C' }, 'D' ], [ 'X', 'Y' ], 'Z' }
+```
+
+**Returns:** A set of all subgraphs in the graph, parallelized.
 
 
 #### `getImmediatePredecessorsOf(...nodes: T[]): Set<T>`
