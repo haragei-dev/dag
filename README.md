@@ -511,4 +511,4 @@ The core algorithm for cycle detection & dynamic topological ordering is an impl
 
 ## Contributing
 
-Contributions are welcome! For feature requests and bug reports, please [submit an issue](
+Contributions are welcome! For feature requests and bug reports, please [submit an issue](https://github.com/haragei-dev/dag/issues).
